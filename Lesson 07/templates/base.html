@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {% block title %}
+        JDU Django
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+    {% block head %}
+
+    {% endblock %}
+    <style>
+      nav a {
+        margin-right: 0.5rem;
+      }
+      header h1 {
+        margin-bottom: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        {% block header %}
+          JDU Django — Lesson 06
+        {% endblock %}
+      </h1>
+      <nav>
+        <a href="{% url 'students:index' %}">Students</a>
+        <a href="{% url 'students:signup' %}">Add Student</a>
+        <a href="/books/">Books</a>
+      </nav>
+      <hr />
+    </header>
+    <main>
+      {% block content %}
+
+      {% endblock %}
+    </main>
+
+    <footer>
+      <small>&copy; {% now 'Y' %}JDU Demo</small>
+    </footer>
+  </body>
+</html>
