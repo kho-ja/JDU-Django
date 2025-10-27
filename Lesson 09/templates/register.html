@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <h2>Ro'yxatdan o'tish</h2>
+    <p style="color: #6b7280; margin-bottom: 2rem;">
+        Yangi hisob yaratish uchun quyidagi formani to'ldiring.
+    </p>
+    
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="username">Foydalanuvchi nomi: *</label>
+            <input type="text" id="username" name="username" required 
+                   placeholder="Foydalanuvchi nomini kiriting" autofocus
+                   minlength="3" maxlength="150">
+            <small style="color: #6b7280; font-size: 0.875rem;">
+                Kamida 3 ta belgi. Harflar, raqamlar va @/./+/-/_ ishlatilishi mumkin.
+            </small>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email: *</label>
+            <input type="email" id="email" name="email" required 
+                   placeholder="email@example.com">
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="first_name">Ism:</label>
+                <input type="text" id="first_name" name="first_name" 
+                       placeholder="Ismingiz" maxlength="150">
+            </div>
+            
+            <div class="form-group">
+                <label for="last_name">Familiya:</label>
+                <input type="text" id="last_name" name="last_name" 
+                       placeholder="Familiyangiz" maxlength="150">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password1">Parol: *</label>
+            <input type="password" id="password1" name="password1" required 
+                   placeholder="Parolni kiriting" minlength="8">
+            <small style="color: #6b7280; font-size: 0.875rem;">
+                Kamida 8 ta belgi bo'lishi kerak.
+            </small>
+        </div>
+        
+        <div class="form-group">
+            <label for="password2">Parolni tasdiqlang: *</label>
+            <input type="password" id="password2" name="password2" required 
+                   placeholder="Parolni qayta kiriting" minlength="8">
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Ro'yxatdan o'tish
+            </button>
+        </div>
+    </form>
+    
+    <div style="margin-top: 1.5rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+        <p style="color: #6b7280;">
+            Allaqachon hisobingiz bormi? 
+            <a href="{% url 'login' %}" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                Kirish
+            </a>
+        </p>
+    </div>
+    
+    <div style="margin-top: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+        <h4 style="color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+            🔒 CSRF Himoyasi
+        </h4>
+        <p style="color: #6b7280; font-size: 0.85rem; line-height: 1.5;">
+            Bu forma CSRF (Cross-Site Request Forgery) hujumlaridan himoyalangan. 
+            <code>{% csrf_token %}</code> tag orqali xavfsizlik tokeni qo'shilgan.
+        </p>
+    </div>
+</div>
+
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <h3 style="color: #374151; margin-bottom: 1rem;">📝 Ro'yxatdan o'tish haqida</h3>
+    <ul style="color: #6b7280; line-height: 1.8; margin-left: 1.5rem;">
+        <li>Barcha * bilan belgilangan maydonlar majburiy</li>
+        <li>Foydalanuvchi nomi noyob bo'lishi kerak</li>
+        <li>Parol kamida 8 ta belgidan iborat bo'lishi kerak</li>
+        <li>Email orqali parolni tiklash mumkin (kelajakda)</li>
+        <li>Ro'yxatdan o'tgandan keyin darhol tizimga kirishingiz mumkin</li>
+    </ul>
+</div>
+{% endblock %}

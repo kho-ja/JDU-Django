@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil sahifasi{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 2rem auto;">
+    <h2>Foydalanuvchi profili</h2>
+    
+    <div style="margin-top: 2rem;">
+        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: bold; margin-right: 1.5rem;">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+            <div>
+                <h3 style="color: #374151; margin-bottom: 0.5rem;">
+                    {{ user.get_full_name|default:user.username }}
+                </h3>
+                <p style="color: #6b7280;">
+                    @{{ user.username }}
+                </p>
+            </div>
+        </div>
+        
+        <div style="background: #f9fafb; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+            <h3 style="color: #374151; margin-bottom: 1rem; font-size: 1.2rem;">
+                Foydalanuvchi ma'lumotlari
+            </h3>
+            
+            <div style="display: grid; gap: 1rem;">
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Foydalanuvchi nomi:</span>
+                    <span style="color: #111827; font-weight: 600;">{{ user.username }}</span>
+                </div>
+                
+                {% if user.email %}
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Email:</span>
+                    <span style="color: #111827; font-weight: 600;">{{ user.email }}</span>
+                </div>
+                {% endif %}
+                
+                {% if user.first_name %}
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Ism:</span>
+                    <span style="color: #111827; font-weight: 600;">{{ user.first_name }}</span>
+                </div>
+                {% endif %}
+                
+                {% if user.last_name %}
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Familiya:</span>
+                    <span style="color: #111827; font-weight: 600;">{{ user.last_name }}</span>
+                </div>
+                {% endif %}
+                
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Ro'yxatdan o'tgan sana:</span>
+                    <span style="color: #111827; font-weight: 600;">{{ user.date_joined|date:"d.m.Y H:i" }}</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Oxirgi kirish:</span>
+                    <span style="color: #111827; font-weight: 600;">
+                        {% if user.last_login %}
+                            {{ user.last_login|date:"d.m.Y H:i" }}
+                        {% else %}
+                            Hech qachon
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <span style="color: #6b7280; font-weight: 500;">Status:</span>
+                    <span style="color: #10b981; font-weight: 600;">
+                        {% if user.is_superuser %}
+                            Superuser
+                        {% elif user.is_staff %}
+                            Xodim
+                        {% else %}
+                            Oddiy foydalanuvchi
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            {% if user.is_staff %}
+            <a href="/admin/" class="btn btn-primary" target="_blank">
+                Admin panel
+            </a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="btn btn-danger">
+                Tizimdan chiqish
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 2rem auto;">
+    <h3 style="color: #374151; margin-bottom: 1rem;">Xush kelibsiz! 🎉</h3>
+    <p style="color: #6b7280; line-height: 1.6;">
+        Siz muvaffaqiyatli tizimga kirdingiz. Bu profil sahifangiz bo'lib, 
+        bu yerda sizning shaxsiy ma'lumotlaringiz ko'rsatilgan. 
+    </p>
+    <p style="color: #6b7280; line-height: 1.6; margin-top: 1rem;">
+        Django autentifikatsiya tizimi sizga foydalanuvchilarni boshqarish, 
+        login/logout funksiyalarini amalga oshirish va xavfsiz ilovalar yaratish imkonini beradi.
+    </p>
+</div>
+{% endblock %}
