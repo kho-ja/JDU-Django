@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Adults{% endblock %}
+
+{% block content %}
+  <h2>Adult Students (18+)</h2>
+  {% if students %}
+    <ul>
+      {% for student in students %}
+        <li>{{ student.name }} — {{ student.age }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No adult students.</p>
+  {% endif %}
+{% endblock %}

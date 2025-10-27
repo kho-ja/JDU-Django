@@ -11,7 +11,12 @@
       {% for book in books %}
         <li>
           <a href="{% url 'books:one' book.id %}">{{ book.name }}</a>
-          by {{ book.author }} ({{ book.release_date }})
+          {% if book.author %}
+            by {{ book.author.name }}
+          {% else %}
+            <em>Unknown author</em>
+          {% endif %}
+          {% if book.release_date %} ({{ book.release_date }}){% endif %}
         </li>
       {% endfor %}
     </ul>

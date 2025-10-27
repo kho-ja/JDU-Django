@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.description }}</p>
+  <p><strong>Word count:</strong> {{ post.description_word_count }}</p>
+  <p><a href="{% url 'posts:index' %}">Back to posts</a></p>
+{% endblock %}

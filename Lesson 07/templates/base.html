@@ -25,13 +25,15 @@
     <header>
       <h1>
         {% block header %}
-          JDU Django — Lesson 06
+          JDU Django — Lesson 07
         {% endblock %}
       </h1>
       <nav>
         <a href="{% url 'students:index' %}">Students</a>
         <a href="{% url 'students:signup' %}">Add Student</a>
+  <a href="{% url 'students:adults' %}">Adults 18+</a>
         <a href="/books/">Books</a>
+  <a href="/posts/">Posts</a>
       </nav>
       <hr />
     </header>
