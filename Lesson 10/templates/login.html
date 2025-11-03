@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Tizimga kirish{% endblock %}
+
+{% block content %}
+<div class="card card-narrow">
+    <h2>Tizimga kirish</h2>
+    
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="username">Foydalanuvchi nomi:</label>
+            <input type="text" id="username" name="username" required 
+                   placeholder="Foydalanuvchi nomini kiriting" autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Parol:</label>
+            <input type="password" id="password" name="password" required 
+                   placeholder="Parolni kiriting">
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary w-100">
+                Kirish
+            </button>
+        </div>
+    </form>
+    
+    <div class="text-center mt-24 pt-24 border-top">
+        <p class="text-muted">
+            Hisobingiz yo'qmi? 
+            <a href="{% url 'register' %}" class="link">
+                Ro'yxatdan o'ting
+            </a>
+        </p>
+    </div>
+    
+    <div class="text-center text-muted mt-24">
+        <p>Test uchun mavjud hisob:</p>
+        <p class="text-sm mt-8">
+            Username: <code>admin</code> | Password: <code>admin</code>
+        </p>
+    </div>
+</div>
+{% endblock %}

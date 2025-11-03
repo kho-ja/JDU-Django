@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil sahifasi{% endblock %}
+
+{% block content %}
+<div class="card card-wide">
+    <h2>Foydalanuvchi profili</h2>
+    
+    <div class="mt-32">
+        <div class="flex-row-center mb-24">
+            <div class="avatar-circle mr-24">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+            <div>
+                <h3 class="text-dark mb-8">
+                    {{ user.get_full_name|default:user.username }}
+                </h3>
+                <p class="text-muted">
+                    @{{ user.username }}
+                </p>
+            </div>
+        </div>
+        
+        <div class="bg-light p-24 rounded mb-24">
+            <h3 class="text-dark mb-16 text-lg">
+                Foydalanuvchi ma'lumotlari
+            </h3>
+            
+            <div class="grid gap-16">
+                <div class="row-between">
+                    <span class="text-muted fw-500">Foydalanuvchi nomi:</span>
+                    <span class="text-darkest fw-600">{{ user.username }}</span>
+                </div>
+                
+                {% if user.email %}
+                <div class="row-between">
+                    <span class="text-muted fw-500">Email:</span>
+                    <span class="text-darkest fw-600">{{ user.email }}</span>
+                </div>
+                {% endif %}
+                
+                {% if user.first_name %}
+                <div class="row-between">
+                    <span class="text-muted fw-500">Ism:</span>
+                    <span class="text-darkest fw-600">{{ user.first_name }}</span>
+                </div>
+                {% endif %}
+                
+                {% if user.last_name %}
+                <div class="row-between">
+                    <span class="text-muted fw-500">Familiya:</span>
+                    <span class="text-darkest fw-600">{{ user.last_name }}</span>
+                </div>
+                {% endif %}
+                
+                <div class="row-between">
+                    <span class="text-muted fw-500">Ro'yxatdan o'tgan sana:</span>
+                    <span class="text-darkest fw-600">{{ user.date_joined|date:"d.m.Y H:i" }}</span>
+                </div>
+                
+                <div class="row-between">
+                    <span class="text-muted fw-500">Oxirgi kirish:</span>
+                    <span class="text-darkest fw-600">
+                        {% if user.last_login %}
+                            {{ user.last_login|date:"d.m.Y H:i" }}
+                        {% else %}
+                            Hech qachon
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="row-between">
+                    <span class="text-muted fw-500">Status:</span>
+                    <span class="text-green fw-600">
+                        {% if user.is_superuser %}
+                            Superuser
+                        {% elif user.is_staff %}
+                            Xodim
+                        {% else %}
+                            Oddiy foydalanuvchi
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="btn-group justify-center">
+            {% if user.is_staff %}
+            <a href="/admin/" class="btn btn-primary" target="_blank">
+                Admin panel
+            </a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="btn btn-danger">
+                Tizimdan chiqish
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card card-wide">
+    <h3 class="text-dark mb-16">Xush kelibsiz! 🎉</h3>
+    <p class="text-muted leading-relaxed">
+        Siz muvaffaqiyatli tizimga kirdingiz. Bu profil sahifangiz bo'lib, 
+        bu yerda sizning shaxsiy ma'lumotlaringiz ko'rsatilgan. 
+    </p>
+    <p class="text-muted leading-relaxed mt-16">
+        Django autentifikatsiya tizimi sizga foydalanuvchilarni boshqarish, 
+        login/logout funksiyalarini amalga oshirish va xavfsiz ilovalar yaratish imkonini beradi.
+    </p>
+</div>
+{% endblock %}

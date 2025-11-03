@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Static Files{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1 class="brand">Japan Digital University</h1>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <a href="{% url 'static_demo' %}">Static Demo</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Profil</a>
+                    <a href="{% url 'logout' %}">Chiqish</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Kirish</a>
+                    <a href="{% url 'register' %}">Ro'yxatdan o'tish</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2025 Japan Digital University. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+
+{% block content %}
+<div class="card card-medium">
+    <h2>Ro'yxatdan o'tish</h2>
+    <p class="text-muted mb-32">
+        Yangi hisob yaratish uchun quyidagi formani to'ldiring.
+    </p>
+    
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="username">Foydalanuvchi nomi: *</label>
+            <input type="text" id="username" name="username" required 
+                   placeholder="Foydalanuvchi nomini kiriting" autofocus
+                   minlength="3" maxlength="150">
+            <small class="text-muted text-sm">
+                Kamida 3 ta belgi. Harflar, raqamlar va @/./+/-/_ ishlatilishi mumkin.
+            </small>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email: *</label>
+            <input type="email" id="email" name="email" required 
+                   placeholder="email@example.com">
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label for="first_name">Ism:</label>
+                <input type="text" id="first_name" name="first_name" 
+                       placeholder="Ismingiz" maxlength="150">
+            </div>
+            
+            <div class="form-group">
+                <label for="last_name">Familiya:</label>
+                <input type="text" id="last_name" name="last_name" 
+                       placeholder="Familiyangiz" maxlength="150">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password1">Parol: *</label>
+            <input type="password" id="password1" name="password1" required 
+                   placeholder="Parolni kiriting" minlength="8">
+            <small class="text-muted text-sm">
+                Kamida 8 ta belgi bo'lishi kerak.
+            </small>
+        </div>
+        
+        <div class="form-group">
+            <label for="password2">Parolni tasdiqlang: *</label>
+            <input type="password" id="password2" name="password2" required 
+                   placeholder="Parolni qayta kiriting" minlength="8">
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary w-100">
+                Ro'yxatdan o'tish
+            </button>
+        </div>
+    </form>
+    
+    <div class="text-center mt-24 pt-24 border-top">
+        <p class="text-muted">
+            Allaqachon hisobingiz bormi? 
+            <a href="{% url 'login' %}" class="link">
+                Kirish
+            </a>
+        </p>
+    </div>
+    
+    <div class="mt-24 p-16 bg-light rounded">
+        <h4 class="text-dark mb-8 text-sm">
+            🔒 CSRF Himoyasi
+        </h4>
+        <p class="text-muted text-sm leading-relaxed">
+            Bu forma CSRF (Cross-Site Request Forgery) hujumlaridan himoyalangan. 
+            <code>{% csrf_token %}</code> tag orqali xavfsizlik tokeni qo'shilgan.
+        </p>
+    </div>
+</div>
+
+<div class="card card-medium">
+    <h3 class="text-dark mb-16">📝 Ro'yxatdan o'tish haqida</h3>
+    <ul class="text-muted list-spaced">
+        <li>Barcha * bilan belgilangan maydonlar majburiy</li>
+        <li>Foydalanuvchi nomi noyob bo'lishi kerak</li>
+        <li>Parol kamida 8 ta belgidan iborat bo'lishi kerak</li>
+        <li>Email orqali parolni tiklash mumkin (kelajakda)</li>
+        <li>Ro'yxatdan o'tgandan keyin darhol tizimga kirishingiz mumkin</li>
+    </ul>
+</div>
+{% endblock %}

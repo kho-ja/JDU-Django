@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Lesson 10{% endblock %}
+
+{% block content %}
+        <div class="main-container fade-in">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>🎓 Lesson 10: Django Static Files</h1>
+                <p class="subtitle">CSS, JavaScript, Images, Videos bilan ishlash</p>
+                
+                <!-- ⭐ TOPSHIRIQ 1: JDU talabalari - Bold, Italic, Rangli -->
+                <div class="text-center mt-20">
+                    <span class="jdu-students">JDU talabalari</span>
+                    <span class="task-badge">✅ Task 1</span>
+                </div>
+            </div>
+
+            <!-- Task 1: CSS Styling Demo -->
+            <div class="card">
+                <h2 class="card-title">📝 Topshiriq 1: CSS Styling</h2>
+                <div class="card-content">
+                    <div class="alert alert-success">
+                        <strong>✅ Bajarildi:</strong> "JDU talabalari" so'zi quyidagi stillar bilan ko'rsatildi:
+                        <ul>
+                            <li><strong>Font-weight: bold</strong> - Qalin shrift</li>
+                            <li><strong>Font-style: italic</strong> - Italic</li>
+                            <li><strong>Color: gradient</strong> - Rangli (gradient animation)</li>
+                        </ul>
+                    </div>
+                    <p><strong>CSS File:</strong> <code>static/css/style.css</code></p>
+                    <p><strong>Class:</strong> <code>.jdu-students</code></p>
+                </div>
+            </div>
+
+            <!-- Task 2: JavaScript Form Demo -->
+            <div class="card">
+                <h2 class="card-title">
+                    📝 Topshiriq 2: JavaScript onclick metodi
+                    <span class="task-badge">✅ Task 2</span>
+                </h2>
+                <div class="card-content">
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Ko'rsatma:</strong> Formani to'ldiring va "Yuborish" tugmasini bosing. 
+                        Ma'lumotlar console'ga chiqariladi (F12 ni bosing).
+                    </div>
+                    
+                    <!-- Form -->
+                    <form id="studentForm" onsubmit="submitForm(event)">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">👤 Ism *</label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    class="form-control" 
+                                    placeholder="Alisher"
+                                    required
+                                    onchange="handleInputChange(event)"
+                                >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">👤 Familiya *</label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    class="form-control" 
+                                    placeholder="Aliyev"
+                                    required
+                                    onchange="handleInputChange(event)"
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">📧 Email *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-control" 
+                                placeholder="alisher@jdu.uz"
+                                required
+                                onchange="handleInputChange(event)"
+                            >
+                        </div>
+                        
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="studentId" class="form-label">🎓 Talaba ID</label>
+                                <input 
+                                    type="text" 
+                                    id="studentId" 
+                                    class="form-control" 
+                                    placeholder="JDU2024001"
+                                    onchange="handleInputChange(event)"
+                                >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="course" class="form-label">📚 Kurs</label>
+                                <select id="course" class="form-control" onchange="handleInputChange(event)">
+                                    <option value="">Tanlang</option>
+                                    <option value="1-kurs">1-kurs</option>
+                                    <option value="2-kurs">2-kurs</option>
+                                    <option value="3-kurs">3-kurs</option>
+                                    <option value="4-kurs">4-kurs</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="form-label">💬 Xabar</label>
+                            <textarea 
+                                id="message" 
+                                class="form-control" 
+                                rows="3"
+                                placeholder="Salom, men JDU talabasi..."
+                                onchange="handleInputChange(event)"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">
+                                📤 Yuborish (Console'ga)
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="fillTestData()">
+                                🎲 Test Ma'lumotlari
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="handleButtonClick()">
+                                🔘 Test Button
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <p class="mt-20"><strong>JavaScript File:</strong> <code>static/js/main.js</code></p>
+                    <p><strong>Funksiya:</strong> <code>submitForm(event)</code>, <code>handleButtonClick()</code></p>
+                </div>
+            </div>
+
+            <!-- Task 3: Student Images -->
+            <div class="card">
+                <h2 class="card-title">
+                    📝 Topshiriq 3: Talabalarning rasmlari
+                    <span class="task-badge">✅ Task 3</span>
+                </h2>
+                <div class="card-content">
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Ma'lumot:</strong> Talabalarning shaxsiy rasmlari <code>static/images/</code> papkasida joylashgan.
+                    </div>
+                    
+                    {% for student in students %}
+                    <div class="student-profile">
+                        <!-- ⭐ TOPSHIRIQ 3: Static image display -->
+                        <img 
+                            src="{% static student.image %}" 
+                            alt="{{ student.first_name }} {{ student.last_name }}"
+                            class="student-image"
+                        >
+                        <div class="student-info">
+                            <div class="student-name">
+                                {{ student.first_name }} {{ student.last_name }}
+                            </div>
+                            <div class="student-details">
+                                <p>📧 <strong>Email:</strong> {{ student.email }}</p>
+                                <p>🎓 <strong>ID:</strong> {{ student.student_id }}</p>
+                                <p>📚 <strong>Kurs:</strong> {{ student.course }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <p class="mt-20"><strong>Images Folder:</strong> <code>static/images/</code></p>
+                    <p><strong>Template Tag:</strong> <code>{% verbatim %}{% static 'images/student1.jpg' %}{% endverbatim %}</code></p>
+                </div>
+            </div>
+
+            <!-- Task 4: Video Player -->
+            <div class="card">
+                <h2 class="card-title">
+                    📝 Topshiriq 4: Video fayl ko'rsatish
+                    <span class="task-badge">✅ Task 4</span>
+                </h2>
+                <div class="card-content">
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Ma'lumot:</strong> Video fayl <code>static/videos/</code> papkasida joylashgan.
+                    </div>
+                    
+                    <h3 class="video-title">{{ video.title }}</h3>
+                    <p class="text-center">{{ video.description }}</p>
+                    
+                    <!-- ⭐ TOPSHIRIQ 4: Video display -->
+                    <div class="video-container">
+                        <video 
+                            class="video-player" 
+                            controls
+                        >
+                            <source src="{% static video.path %}" type="video/mp4">
+                            <p>Sizning browseringiz video'ni qo'llab-quvvatlamaydi.</p>
+                        </video>
+                    </div>
+                    
+                    <p class="mt-20"><strong>Videos Folder:</strong> <code>static/videos/</code></p>
+                    <p><strong>Video File:</strong> <code>demo.MP4</code></p>
+                    <p><strong>HTML5 Tag:</strong> <code>&lt;video controls&gt;</code></p>
+                </div>
+            </div>
+
+            <!-- Lesson 10 - Xulosa removed per requirements -->
+        </div>
+        
+        <!-- ⭐ TOPSHIRIQ 2: JavaScript faylini ulash -->
+        <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
