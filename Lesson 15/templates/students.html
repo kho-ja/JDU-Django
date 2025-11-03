@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Students - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2><i class="fas fa-users"></i> Students</h2>
+            <p class="text-muted">Manage all students</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                <i class="fas fa-plus"></i> Add Student
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form method="get" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" 
+                       placeholder="Search by JDU ID, Guruh, Name..." 
+                       value="{{ search_query }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                {% if search_query %}
+                <a href="{% url 'students' %}" class="btn btn-secondary ms-2">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card bg-primary">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ total_students }}</h3>
+                    <p>Total Students</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-success">
+                <div class="stat-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ students.count }}</h3>
+                    <p>Found</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-warning">
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>4</h3>
+                    <p>Courses</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-danger">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>95%</h3>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-table"></i> Students List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>JDU ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Guruh</th>
+                            <th>Course</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><span class="badge bg-primary">{{ student.jdu_id }}</span></td>
+                            <td>{{ student.get_full_name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.phone|default:"N/A" }}</td>
+                            <td><span class="badge bg-secondary">{{ student.guruh|default:"N/A" }}</span></td>
+                            <td><span class="badge bg-info">{{ student.course }}-kurs</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editStudentModal{{ student.id }}"
+                                        title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <a href="{% url 'delete_student' student.id %}" 
+                                   class="btn btn-sm btn-danger" 
+                                   onclick="return confirm('Are you sure you want to delete {{ student.get_full_name }}?')"
+                                   title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <!-- Edit Student Modal -->
+                        <div class="modal fade" id="editStudentModal{{ student.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title"><i class="fas fa-edit"></i> Edit Student</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="update">
+                                        <input type="hidden" name="student_id" value="{{ student.id }}">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">JDU ID</label>
+                                                <input type="text" class="form-control" value="{{ student.jdu_id }}" disabled>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="edit_first_name{{ student.id }}" class="form-label">First Name</label>
+                                                    <input type="text" class="form-control" id="edit_first_name{{ student.id }}" name="first_name" value="{{ student.first_name }}" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="edit_last_name{{ student.id }}" class="form-label">Last Name</label>
+                                                    <input type="text" class="form-control" id="edit_last_name{{ student.id }}" name="last_name" value="{{ student.last_name }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_email{{ student.id }}" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="edit_email{{ student.id }}" name="email" value="{{ student.email }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_phone{{ student.id }}" class="form-label">Phone</label>
+                                                <input type="text" class="form-control" id="edit_phone{{ student.id }}" name="phone" value="{{ student.phone }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_guruh{{ student.id }}" class="form-label">Guruh</label>
+                                                <input type="text" class="form-control" id="edit_guruh{{ student.id }}" name="guruh" value="{{ student.guruh }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_course{{ student.id }}" class="form-label">Course</label>
+                                                <select class="form-select" id="edit_course{{ student.id }}" name="course" required>
+                                                    <option value="1" {% if student.course == 1 %}selected{% endif %}>1-kurs</option>
+                                                    <option value="2" {% if student.course == 2 %}selected{% endif %}>2-kurs</option>
+                                                    <option value="3" {% if student.course == 3 %}selected{% endif %}>3-kurs</option>
+                                                    <option value="4" {% if student.course == 4 %}selected{% endif %}>4-kurs</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-warning">Update Student</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                <p class="text-muted">No students found</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-user-plus"></i> Add New Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="jdu_id" class="form-label">JDU ID</label>
+                        <input type="text" class="form-control" id="jdu_id" name="jdu_id" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="guruh" class="form-label">Guruh</label>
+                        <input type="text" class="form-control" id="guruh" name="guruh" placeholder="e.g., A-21, B-22">
+                    </div>
+                    <div class="mb-3">
+                        <label for="course" class="form-label">Course</label>
+                        <select class="form-select" id="course" name="course" required>
+                            <option value="1">1-kurs</option>
+                            <option value="2">2-kurs</option>
+                            <option value="3">3-kurs</option>
+                            <option value="4">4-kurs</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
